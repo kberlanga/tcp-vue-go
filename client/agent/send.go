@@ -1,6 +1,7 @@
 package agent
 
 import (
+	"errors"
 	"log"
 	"os"
 	"strings"
@@ -15,16 +16,16 @@ type SharedData struct {
 	Filename string
 }
 
-func SendData(data SharedData) {
+func SendData(data SharedData) error {
 
 	client, err := socketio_client.NewClient(URI, GetOpts())
 	if err != nil {
-		log.Printf("newClient error:%v\n", err)
+		return err
 	}
 
 	contentFile, err := readFile(data.Filepath)
 	if err != nil {
-		log.Printf("readFile error:%v\n", err)
+		return err
 	}
 
 	data.Data = contentFile
@@ -33,12 +34,14 @@ func SendData(data SharedData) {
 	client.Emit("send", data)
 	log.Printf("client is sending data by channel: %v...\n", data.Channel)
 
+	return nil
 }
 
 func readFile(filepath string) ([]byte, error) {
 	data, err := os.ReadFile(filepath)
 	if err != nil {
-		return nil, err
+		log.Println(err)
+		return nil, errors.New("error reading file")
 	}
 
 	return data, nil
