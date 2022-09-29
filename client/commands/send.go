@@ -38,6 +38,5 @@ func (g *SendCommand) Run() error {
 		Filepath: g.filepath,
 	}
 
-	agent.SendData(data)
-	return nil
+	return agent.SendData(data)
 }
