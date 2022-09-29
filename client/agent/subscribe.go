@@ -17,6 +17,7 @@ func SubscribeClient(channel string) {
 
 	client.On("reply", func(data SharedData) {
 		log.Printf("receiving data\nfrom channel: %s\ncontent-file: %s", data.Channel, string(data.Data))
+		client.Emit("received", data)
 	})
 
 	reader := bufio.NewReader(os.Stdin)
