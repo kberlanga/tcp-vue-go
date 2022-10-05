@@ -133,7 +133,7 @@ export default {
     },
   },
   watch: {
-    stadistics: {
+    data: {
       deep: true,
       handler: function (newVal) {
         this.stadistics = newVal;
